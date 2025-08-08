@@ -1,0 +1,29 @@
+# cloudbuild.yaml
+steps:
+- name: 'gcr.io/cloud-builders/gcloud' # Standard builder with wget, unzip, bash
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    # The HPC Toolkit's gcluster command requires Terraform to be installed.
+    echo "Installing Terraform..."
+    TERRAFORM_VERSION="1.5.7"
+    wget -q https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+    unzip -o terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+    mv terraform /usr/local/bin/
+    echo "Terraform installation complete."
+    terraform --version
+
+    # Make the gcluster script from your repo executable
+    chmod +x ./gcluster
+
+    # Run the deployment command provided
+    echo "Starting gcluster deployment..."
+    ./gcluster deploy \
+      -d examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml \
+      examples/machine-learning/a3-megagpu-8g/lustre-nvidia-a3mega-slurm-u2404-blueprint.yaml \
+      --auto-approve \
+      --force
+
+# Set a higher timeout as HPC deployments can take a long time.
+timeout: 7200s # 2 hours
