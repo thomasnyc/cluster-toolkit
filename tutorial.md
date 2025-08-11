@@ -39,8 +39,28 @@ Before you begin, make sure you have the following:
 * A **Google Cloud Project** with an active billing account.
 * The **<code>gcloud</code> command-line tool** installed and authenticated (`gcloud auth login`).
 * A **Git repository** (e.g., on GitHub, GitLab, or Cloud Source Repositories) containing your HPC Toolkit configuration files.
-* The required APIs enabled in your project. You can enable them with this command: \
+
+Run the gcloud auth login and gcloud auth application-default login 
 ```bash
+gcloud auth login
+```
+
+```bash
+  gcloud auth application-default login
+```
+
+Set the default project:
+
+```bash
+  gcloud config set project 
+```
+
+
+
+
+* You can install the terraform , go, packer with this command: \
+```bash
+chmod 755 cloudshell-install-dependence.sh 
 sudo ./cloudshell-install-dependence.sh 
 ```
 Then we need to run **make** command to build the **ghpc and gcluster** command.
