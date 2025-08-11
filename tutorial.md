@@ -47,7 +47,12 @@ gcloud auth login
 
 ```bash
   gcloud auth application-default login
+  export GOOGLE_APPLICATION_CREDENTIALS=
 ```
+Note: 
+Credentials saved to file: [/tmp/xxxxx/application_default_credentials.json]
+Then copy the full path to export GOOGLE_APPLICATION_CREDENTIALS=xxx.json
+
 
 Set the default project:
 
