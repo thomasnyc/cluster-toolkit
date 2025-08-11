@@ -43,6 +43,12 @@ Before you begin, make sure you have the following:
 ```bash
 sudo ./cloudshell-install-dependence.sh 
 ```
+Then we need to run **make** command to build the **ghpc and gcluster** command.
+
+```bash
+make
+```
+
 * 
 ---
 
@@ -84,54 +90,40 @@ vars:
 ## **Step 2: Update the blueprint file 🛠️**
 
 Cluster Toolkit provisions the cluster based on the deployment file you created in the previous step and the default cluster blueprint.
-We offered the sample **a3mega-slurm-blueprint.yaml**
+We offered the sample example/machine-learning/a3-megagpu-8g/**a3mega-slurm-blueprint.yaml**
 
-Our team has the **lustre-nvidia-jul28-a3mega-slurm-blueprint.yaml** sample which includes lustre creation service.
+Our team has the **a3mega-lustre-slurm-blueprint.yaml** sample which includes managed-lustre creation service.
 Please make any upates needed. 
 
 ---
 
 
-## **Step 3: Deploy the Cluster 🔑**
+## **Step 3: Deploy the Cluster 🎉**
 
 Option 1 - This is the single click deployment: 
+If you never create the network and the image, please run this option:
 
 ```bash
-sh ./gcluster deploy -d examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml examples/machine-learning/a3-megagpu-8g/lustre-nvidia-jul28-a3mega-slurm-blueprint.yaml --auto-approve
+./gcluster deploy -d examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml examples/machine-learning/a3-megagpu-8g/a3mega-lustre-slurm-blueprint.yaml --auto-approve
 ```
 
 
-Option 2 - if one already deployed the cluster before. 
-
-Delele the clsuter only:
-
-
-
+Option 2 - Deploy / Destroy the cluster only 
+If you want to Deploy / Destroy the clsuter only. Please follow the following steps: 
 
 Deploy the cluster only: 
 
+```bash
+test command here: 
+```
 
+Delele the clsuter only:
 
-
-    **Security Note**: For production, always follow the principle of least privilege. You can analyze the specific resources in your blueprint to grant more granular roles instead of broad ones like `compute.admin`.
-
-
-
----
-
-
-
-## **Step 5: Run Your Deployment! 🎉**
-
-Your automated pipeline is now active! To run the deployment, simply commit and push your files to the branch you configured in the trigger.
-
-Bash
-
-You can watch the build's progress in real-time in the **Cloud Build** > **History** page in the Google Cloud Console.
-
+```bash
+test commmand here: 
+```
 
 ---
-
 
 ## **Cleaning Up 🧹**
 
@@ -139,6 +131,6 @@ HPC clusters can be expensive, so it's critical to tear down your resources when
 
 You can destroy the deployment by running the `ghpc destroy` command locally with the same deployment file.
 
-Bash
-
-Remember to also **disable or delete the Cloud Build trigger** in the console to prevent any future accidental builds.
+```bash
+./gcluster destroy a3
+```
