@@ -1,25 +1,3 @@
-<!-----
-
-
-
-Conversion time: 0.906 seconds.
-
-
-Using this Markdown file:
-
-1. Paste this output into your source file.
-2. See the notes and action items below regarding this conversion run.
-3. Check the rendered output (headings, lists, code blocks, tables) for proper
-   formatting and use a linkchecker before you publish this page.
-
-Conversion notes:
-
-* Docs to Markdown version 1.0β44
-* Fri Aug 08 2025 13:06:10 GMT-0700 (PDT)
-* Source doc: Untitled document
------>
-
-
 
 # **Automating HPC Deployments on Google Cloud using Cluster Toolkit**
 
@@ -77,7 +55,7 @@ make
 ---
 
 
-## **Step 1: Prepare the clsuter variables and blueprint file 📁**
+## **Step 1: Prepare the cluster variables and blueprint file 📁**
 
 Your Git repository needs to contain your HPC deployment and blueprint files
 
@@ -138,7 +116,7 @@ Please make any upates needed.
 
 ## **Step 3: Deploy the Cluster 🎉**
 
-Option 1 - This is the single click deployment: 
+**Full Deployment** - This is the single click deployment: 
 If you never create the network and the image, please run this option:
 
 ```bash
@@ -147,10 +125,11 @@ If you never create the network and the image, please run this option:
 
 Note:  
 Image builing process runs between 30 - 40 mins 
+
 Managed Lustre creating process runs between 30 - 40 mins
 
 
-Option 2 - Deploy / Destroy the cluster only 
+**Cluster Deploy / Destory only**  - Deploy / Destroy the cluster only. This is for users who already created the network and have the custom image built. 
 If you want to Deploy / Destroy the clsuter only. Please follow the following steps: 
 
 Deploy the cluster only: 
@@ -175,5 +154,5 @@ HPC clusters can be expensive, so it's critical to tear down your resources when
 You can destroy the deployment by running the `ghpc destroy` command locally with the same deployment file.
 
 ```bash
-./gcluster destroy a3mega-lustre-base/
+./gcluster destroy a3mega-lustre-base
 ```
