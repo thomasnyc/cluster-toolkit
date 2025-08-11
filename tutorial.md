@@ -29,7 +29,7 @@ In order to kick off the demo / tutorial, please click on the link:
 https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/thomasnyc/cluster-toolkit&cloudshell_tutorial=tutorial.md
 
 
-By the end of this tutorial, you'll be able to push changes to your Git repository and have Cloud Build automatically deploy or update your HPC cluster.
+By the end of this tutorial, you'll be able to deploy your HPC cluster.
 
 
 ---
@@ -131,9 +131,8 @@ Replace the following:
 Cluster Toolkit provisions the cluster based on the deployment file you created in the previous step and the default cluster blueprint.
 We offered the sample example/machine-learning/a3-megagpu-8g/**a3mega-slurm-blueprint.yaml**
 
-Our team has the **a3mega-lustre-slurm-blueprint.yaml** sample which includes managed-lustre creation service.
+Here is the  **a3mega-lustre-slurm-blueprint.yaml** sample which includes managed-lustre creation service.
 Please make any upates needed. 
-
 ---
 
 
@@ -145,6 +144,10 @@ If you never create the network and the image, please run this option:
 ```bash
 ./gcluster deploy -d examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml examples/machine-learning/a3-megagpu-8g/a3mega-lustre-slurm-blueprint.yaml --auto-approve
 ```
+
+Note:  
+Image builing process runs between 30 - 40 mins 
+Managed Lustre creating process runs between 30 - 40 mins
 
 
 Option 2 - Deploy / Destroy the cluster only 
