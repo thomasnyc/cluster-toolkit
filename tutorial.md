@@ -156,13 +156,14 @@ If you want to Deploy / Destroy the clsuter only. Please follow the following st
 Deploy the cluster only: 
 
 ```bash
-test command here: 
+  gcluster import-inputs a3mega-lustre-base/cluster
+  terraform -chdir=a3mega-lustre-base/cluster apply
 ```
 
 Delele the clsuter only:
 
 ```bash
-test commmand here: 
+  terraform -chdir=a3mega-lustre-base/cluster destroy
 ```
 
 ---
