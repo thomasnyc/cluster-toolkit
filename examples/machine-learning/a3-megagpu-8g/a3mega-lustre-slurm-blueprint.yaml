@@ -124,7 +124,7 @@ deployment_groups:
             "install_managed_lustre": true,
             "install_gcsfuse": true,
             "monitoring_agent": "cloud-ops",
-            "use_open_drivers": false
+            "use_open_drivers": true
           }
       - type: shell
         destination: install_slurm.sh
