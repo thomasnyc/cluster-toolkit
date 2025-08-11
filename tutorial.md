@@ -41,7 +41,7 @@ Before you begin, make sure you have the following:
 * A **Git repository** (e.g., on GitHub, GitLab, or Cloud Source Repositories) containing your HPC Toolkit configuration files.
 * The required APIs enabled in your project. You can enable them with this command: \
 ```bash
-sh sudo ./install-prep.sh 
+sudo ./cloudshell-install-dependence.sh 
 ```
 * 
 ---
