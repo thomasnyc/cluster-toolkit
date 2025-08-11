@@ -37,10 +37,10 @@ Before you begin, make sure you have the following:
 
 
 * A **Google Cloud Project** with an active billing account.
-* The **<code>gcloud</code> command-line tool** installed and authenticated (`gcloud auth login`).
-* A **Git repository** (e.g., on GitHub, GitLab, or Cloud Source Repositories) containing your HPC Toolkit configuration files.
+* The **<code>gcloud</code> command-line tool** installed and authenticated (`gcloud auth login`) & (`gcloud auth application-default login`) follow the command below: 
+* A **Git repository** (e.g., on GitHub, GitLab, or Cloud Source Repositories) containing your Cluster Toolkit configuration files. Cloud shell command shall already clone the repository required.
 
-Run the gcloud auth login and gcloud auth application-default login 
+* Run the gcloud auth login and gcloud auth application-default login 
 ```bash
 gcloud auth login
 ```
@@ -54,27 +54,22 @@ Credentials saved to file: [/tmp/xxxxx/application_default_credentials.json]
 Then copy the full path to export GOOGLE_APPLICATION_CREDENTIALS=xxx.json
 
 
-Set the default project:
+* Set the default GCP project:
 
 ```bash
   gcloud config set project 
 ```
 
-
-
-
-* You can install the terraform , go, packer with this command: \
+* You can install the terraform , go, packer with this script:
 ```bash
 chmod 755 cloudshell-install-dependence.sh 
 sudo ./cloudshell-install-dependence.sh 
 ```
-Then we need to run **make** command to build the **ghpc and gcluster** command.
+* Then we need to run **make** command to build the **ghpc and gcluster** command.
 
 ```bash
 make
 ```
-
-* 
 ---
 
 
@@ -87,6 +82,7 @@ Using a text editor, open the examples/machine-learning/a3-megagpu-8g/a3mega-slu
 
 In the deployment file, specify the Cloud Storage bucket, set names for your network and subnetwork, and set deployment variables such as project ID, region, and zone.
 
+```yaml
 terraform_backend_defaults:
   type: gcs
   configuration:
@@ -108,6 +104,20 @@ vars:
   a3mega_reservation_name: "" # supply reservation name
   a3mega_maintenance_interval: ""
   a3mega_cluster_size: 2 # supply cluster size
+```
+Replace the following:
+
+* BUCKET_NAME: the name of your Cloud Storage bucket, created in the previous section.
+* PROJECT_ID: your project ID.
+* REGION: a region that has a3-megagpu-8g machine types.
+* ZONE: a zone that has a3-megagpu-8g machine types.
+* NETWORK_NAME: a name for your network. For example, a3mega-sys-net.
+* SUBNETWORK_NAME: a name for your subnetwork. For example, a3mega-sys-subnet.
+* RESERVATION_NAME: the name of your reservation provided by your Google Cloud account team when you requested capacity.
+* MAINTENANCE_INTERVAL: specify one of the following:
+  If you are using a reservation created by your account team, set a3mega_maintenance_interval: PERIODIC
+  If you created your own reservation, set a3mega_maintenance_interval: "". This action sets the maintenance value to an empty string which is the default value.
+* NUMBER_OF_VMS: the number of VMs needed for the cluster.
 
 ---
 
@@ -157,5 +167,5 @@ HPC clusters can be expensive, so it's critical to tear down your resources when
 You can destroy the deployment by running the `ghpc destroy` command locally with the same deployment file.
 
 ```bash
-./gcluster destroy a3
+./gcluster destroy a3mega-lustre-base/
 ```
