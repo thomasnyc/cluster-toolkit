@@ -25,6 +25,11 @@ Conversion notes:
 
 This tutorial guides you through setting up a continuous integration (CI) pipeline using **GCP Cluster Toolkit** to automatically deploy high-performance computing (HPC) environments. We'll use the **Google Cloud HPC Toolkit** (`gcluster`) to define the infrastructure in YAML files.
 
+In order to kick off the demo / tutorial, please click on the link:
+https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/thomasny
+c/cluster-toolkit&cloudshell_tutorial=tutorial.md
+
+
 By the end of this tutorial, you'll be able to push changes to your Git repository and have Cloud Build automatically deploy or update your HPC cluster.
 
 
