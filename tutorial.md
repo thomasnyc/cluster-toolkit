@@ -21,9 +21,9 @@ Conversion notes:
 
 
 
-# **Automating HPC Deployments on Google Cloud with Cloud Build 🚀**
+# **Automating HPC Deployments on Google Cloud using Cluster Toolkit**
 
-This tutorial guides you through setting up a continuous integration (CI) pipeline using **Google Cloud Build** to automatically deploy high-performance computing (HPC) environments. We'll use the **Google Cloud HPC Toolkit** (`ghpc`) to define the infrastructure in YAML files.
+This tutorial guides you through setting up a continuous integration (CI) pipeline using **GCP Cluster Toolkit** to automatically deploy high-performance computing (HPC) environments. We'll use the **Google Cloud HPC Toolkit** (`gcluster`) to define the infrastructure in YAML files.
 
 By the end of this tutorial, you'll be able to push changes to your Git repository and have Cloud Build automatically deploy or update your HPC cluster.
 
@@ -36,52 +36,82 @@ By the end of this tutorial, you'll be able to push changes to your Git reposito
 Before you begin, make sure you have the following:
 
 
-
 * A **Google Cloud Project** with an active billing account.
 * The **<code>gcloud</code> command-line tool** installed and authenticated (`gcloud auth login`).
 * A **Git repository** (e.g., on GitHub, GitLab, or Cloud Source Repositories) containing your HPC Toolkit configuration files.
 * The required APIs enabled in your project. You can enable them with this command: \
-Bash
+```bash
+sh sudo ./install-prep.sh 
+```
 * 
+---
 
+
+## **Step 1: Prepare the clsuter variables and blueprint file 📁**
+
+Your Git repository needs to contain your HPC deployment and blueprint files
+
+1. Update the deployment file
+Using a text editor, open the examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml file.
+
+In the deployment file, specify the Cloud Storage bucket, set names for your network and subnetwork, and set deployment variables such as project ID, region, and zone.
+
+terraform_backend_defaults:
+  type: gcs
+  configuration:
+    bucket: <user-terraform-bucketname>
+
+vars:
+  deployment_name: a3mega-lustre-base
+  project_id: <user-GCP-project-ID>
+  region: <region>
+  zone: <zone>
+  network_name_system: a3mega-sys-net
+  subnetwork_name_system: a3mega-sys-subnet
+  enable_ops_agent: true
+  enable_nvidia_dcgm: true
+  enable_nvidia_persistenced: true
+  disk_size_gb: 200
+  final_image_family: slurm-a3mega
+  slurm_cluster_name: a3mega
+  a3mega_reservation_name: "" # supply reservation name
+  a3mega_maintenance_interval: ""
+  a3mega_cluster_size: 2 # supply cluster size
 
 ---
 
 
-## **Step 1: Prepare Your Repository 📁**
+## **Step 2: Update the blueprint file 🛠️**
 
-Your Git repository needs to contain your HPC deployment and blueprint files, along with the `cloudbuild.yaml` file we will create.
+Cluster Toolkit provisions the cluster based on the deployment file you created in the previous step and the default cluster blueprint.
+We offered the sample **a3mega-slurm-blueprint.yaml**
 
-Your repository structure should look like this. The key is that `cloudbuild.yaml` is at the root, and the paths to your deployment files inside the YAML are correct relative to the root.
-
-**Note:** You do not need to include the `ghpc` binary in your repository. We will use the official Google-managed container image, which has all dependencies pre-installed.
-
-
----
-
-
-## **Step 2: Create the <code>cloudbuild.yaml</code> File 🛠️**
-
-This file tells Cloud Build what to do. Create a file named `cloudbuild.yaml` in the root of your repository with the following content. This configuration uses the official HPC Toolkit container image, which is the recommended method.
-
-YAML
-
+Our team has the **lustre-nvidia-jul28-a3mega-slurm-blueprint.yaml** sample which includes lustre creation service.
+Please make any upates needed. 
 
 ---
 
 
-## **Step 3: Grant Permissions to Cloud Build 🔑**
+## **Step 3: Deploy the Cluster 🔑**
 
-Cloud Build runs using a special service account. You must give this account permission to create the resources for your HPC cluster (like VMs, networks, IAM roles, etc.).
+Option 1 - This is the single click deployment: 
+
+```bash
+sh ./gcluster deploy -d examples/machine-learning/a3-megagpu-8g/a3mega-slurm-deployment.yaml examples/machine-learning/a3-megagpu-8g/lustre-nvidia-jul28-a3mega-slurm-blueprint.yaml --auto-approve
+```
+
+
+Option 2 - if one already deployed the cluster before. 
+
+Delele the clsuter only:
 
 
 
-1. First, identify your Cloud Build service account. Run the following commands to store its email address in a shell variable: \
-Bash
-2. 
-3. Next, grant the necessary IAM roles to this service account. The HPC Toolkit needs broad permissions to manage infrastructure. \
-Bash
-4. 
+
+Deploy the cluster only: 
+
+
+
 
     **Security Note**: For production, always follow the principle of least privilege. You can analyze the specific resources in your blueprint to grant more granular roles instead of broad ones like `compute.admin`.
 
@@ -89,25 +119,6 @@ Bash
 
 ---
 
-
-## **Step 4: Create a Cloud Build Trigger ⚙️**
-
-A trigger automatically starts a build in response to repository events, like a `git push`.
-
-
-
-1. In the Google Cloud Console, navigate to the **Cloud Build** > **Triggers** page.
-2. Click **Connect repository** and select your source code provider (e.g., GitHub). Follow the authentication steps.
-3. Once connected, click **Create trigger**.
-4. Fill out the trigger settings:
-    * **Name**: A descriptive name, like `deploy-hpc-cluster-main`.
-    * **Event**: Select **Push to a branch**.
-    * **Source**: Select your repository and the branch that will trigger builds (e.g., `main`).
-    * **Configuration**: Choose **Cloud Build configuration file (yaml or json)**. The location should default to `/cloudbuild.yaml`.
-5. Click **Create**.
-
-
----
 
 
 ## **Step 5: Run Your Deployment! 🎉**
